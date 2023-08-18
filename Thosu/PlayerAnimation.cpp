@@ -109,8 +109,8 @@ void PlayerAnimation::updateAnimation()
 
 			player_sprite_frame.top = 50.f;
 
-			if (player_sprite_frame.left >= 224) {
-				player_sprite_frame.left = 192.f;
+			if (player_sprite_frame.left >= 192.f) {
+				player_sprite_frame.left = 160.f;
 			}
 			else {
 				player_sprite_frame.left += 32.f;
@@ -120,10 +120,10 @@ void PlayerAnimation::updateAnimation()
 			player_sprite.setTextureRect(player_sprite_frame);
 		}
 	}
-	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHTBACKIDEL && elapsed_time >= animation_interval_delay) {
-		if (animation_timer.getElapsedTime().asSeconds() >= animation_interval_delay) {
+	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHTBACKIDLE && elapsed_time >= animation_interval_delay) {
+		if (animation_timer.getElapsedTime().asSeconds() >= 0.1f) {
 
-			player_sprite_frame.top = 40.f;
+			player_sprite_frame.top = 100.f;
 
 
 
@@ -131,10 +131,10 @@ void PlayerAnimation::updateAnimation()
 
 		}
 	}
-	else if (animation_state == PLAYER_ANIMATION_STATES::LEFTBACKIDEL && elapsed_time >= animation_interval_delay) {
-		if (animation_timer.getElapsedTime().asSeconds() >= animation_interval_delay) {
+	else if (animation_state == PLAYER_ANIMATION_STATES::LEFTBACKIDLE && elapsed_time >= animation_interval_delay) {
+		if (animation_timer.getElapsedTime().asSeconds() >= 0.1f) {
 
-			player_sprite_frame.top = 20.f;
+			player_sprite_frame.top = 50.f;
 
 
 
