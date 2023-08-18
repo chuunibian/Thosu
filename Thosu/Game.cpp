@@ -1,0 +1,56 @@
+#include "Game.h"
+
+void Game::initVariables()
+{
+
+}
+
+void Game::initWindow()
+{
+    screen_size = VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH);
+    window = new RenderWindow(screen_size, "Thosu", Style::Close | Style::Titlebar); //Window with close and titlebar
+    window->setFramerateLimit(FRAME_LIMIT);
+}
+
+Game::Game()
+{
+    initWindow();
+    initVariables();
+}
+
+Game::~Game()
+{
+    delete window;
+}
+
+bool Game::isOpen()
+{
+    return window->isOpen();
+}
+
+void Game::pollEvents()
+{
+    while (window->pollEvent(exit_event)) {
+        if (exit_event.type == Event::Closed) {
+            window->close();
+        }
+        else if (exit_event.KeyPressed && exit_event.Event::key.code == Keyboard::Escape) {
+            window->close();
+        }
+    }
+}
+
+void Game::update()
+{
+    pollEvents();
+    player_controller.update();
+}
+
+void Game::render()
+{
+    window->clear();
+
+    player_controller.render(*window);
+
+    window->display();
+}
