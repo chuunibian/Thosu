@@ -48,6 +48,11 @@ Sprite PlayerAnimation::getSprite()
 	return player_sprite;
 }
 
+int PlayerAnimation::getPlayerSpriteFrame()
+{
+	return player_sprite_frame.left;
+}
+
 void PlayerAnimation::move(float x, float y)
 {
 	this->player_sprite.move(x, y);
@@ -70,6 +75,11 @@ void PlayerAnimation::updateAnimation()
 	if (animation_state == PLAYER_ANIMATION_STATES::IDLE) {
 		if (elapsed_time >= animation_interval_delay) {
 			player_sprite_frame.top = 0.f;	 //set intRec pos to the top where IDLE sprite line is
+
+			if (player_sprite_frame.left > 108.f) { //Since left move sprites are bigger than idle size must check and go back to the original idle spot
+				player_sprite_frame.left = 0.f;
+			}
+
 			if (idle_animation_switch == false) {	//sprite sheet bouncing back and forth
 				player_sprite_frame.left -= 32.f;
 				if (player_sprite_frame.left < 0) { //can optimize by making width a const
@@ -120,30 +130,34 @@ void PlayerAnimation::updateAnimation()
 			player_sprite.setTextureRect(player_sprite_frame);
 		}
 	}
-	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHTBACKIDLE && elapsed_time >= animation_interval_delay) {
-		if (animation_timer.getElapsedTime().asSeconds() >= 0.1f) {
+	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHTBACKIDLE) {
+		if (elapsed_time >= 0.06f) {
+			if (player_sprite_frame.left <= 192.f) {
+				player_sprite_frame.top = 100.f;
 
-			player_sprite_frame.top = 100.f;
+				player_sprite_frame.left += 32;
+			}
 
-
-
-
-
+			animation_timer.restart();
+			player_sprite.setTextureRect(player_sprite_frame);
 		}
 	}
-	else if (animation_state == PLAYER_ANIMATION_STATES::LEFTBACKIDLE && elapsed_time >= animation_interval_delay) {
-		if (animation_timer.getElapsedTime().asSeconds() >= 0.1f) {
+	else if (animation_state == PLAYER_ANIMATION_STATES::LEFTBACKIDLE) {
+		if (elapsed_time >= 0.06f) {
+			if (player_sprite_frame.left >= 0.f) {
 
-			player_sprite_frame.top = 50.f;
+				player_sprite_frame.top = 50.f;
 
+				player_sprite_frame.left -= 32;
+			}
 
-
-
-
+			animation_timer.restart();
+			player_sprite.setTextureRect(player_sprite_frame);
 		}
 	}
 	else {
 		animation_timer.restart();
+		player_sprite_frame.left = 0.f;
 	}
 
 

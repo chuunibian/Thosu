@@ -33,6 +33,7 @@ public:
 	//Accessors
 	void changePlayerState(PLAYER_ANIMATION_STATES state);
 	Sprite getSprite();
+	int getPlayerSpriteFrame();
 
 	//Functions
 	void move(float x, float y);
