@@ -134,16 +134,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="PlayerProjectile.cpp" />
+    <ClCompile Include="TextController.cpp" />
     <ClCompile Include="Thosu.cpp" />
+    <ClCompile Include="WorldBackground.cpp" />
+    <ClCompile Include="WorldBackgroundAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAnimation.h" />
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="PlayerProjectile.h" />
+    <ClInclude Include="TextController.h" />
+    <ClInclude Include="WorldBackground.h" />
+    <ClInclude Include="WorldBackgroundAnimation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

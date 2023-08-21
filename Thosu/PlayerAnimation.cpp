@@ -53,6 +53,16 @@ int PlayerAnimation::getPlayerSpriteFrame()
 	return player_sprite_frame.left;
 }
 
+const Vector2f& PlayerAnimation::getPlayerPosition()
+{
+	return player_sprite.getPosition();
+}
+
+FloatRect PlayerAnimation::getPlayerBounds()
+{
+	return player_sprite.getGlobalBounds();
+}
+
 void PlayerAnimation::move(float x, float y)
 {
 	this->player_sprite.move(x, y);
@@ -63,8 +73,9 @@ void PlayerAnimation::update()
 	updateAnimation();
 }
 
-void PlayerAnimation::render()
+void PlayerAnimation::render(RenderTarget& target)
 {
+	target.draw(player_sprite);
 }
 
 

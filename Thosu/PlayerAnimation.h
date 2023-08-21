@@ -1,9 +1,11 @@
 #pragma once
 #include "Player.h"
+#include "PlayerProjectile.h"
+
 
 #define SPRITE_FRAME_DIMENSION_H 50
 #define SPRITE_FRAME_DIMENSION_W 32
-#define PLAYER_SPRITE_SCALE 1.5
+#define PLAYER_SPRITE_SCALE 1.7
 
 enum PLAYER_ANIMATION_STATES {IDLE = 1, LEFT = 2, RIGHT = 3, RIGHTBACKIDLE = 4, LEFTBACKIDLE = 5};
 
@@ -34,11 +36,13 @@ public:
 	void changePlayerState(PLAYER_ANIMATION_STATES state);
 	Sprite getSprite();
 	int getPlayerSpriteFrame();
+	const Vector2f& getPlayerPosition();
+	FloatRect getPlayerBounds();
 
 	//Functions
 	void move(float x, float y);
 
 	void update();
-	void render();
+	void render(RenderTarget& target);
 };
 
