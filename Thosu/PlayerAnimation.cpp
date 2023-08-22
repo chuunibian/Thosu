@@ -170,6 +170,4 @@ void PlayerAnimation::updateAnimation()
 		animation_timer.restart();
 		player_sprite_frame.left = 0.f;
 	}
-
-
 }

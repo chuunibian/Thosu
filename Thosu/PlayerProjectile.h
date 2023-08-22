@@ -3,7 +3,9 @@
 #include <SFML/System.hpp>
 #include<SFML/Graphics.hpp>
 
-#define INITIAL_PROJECTILE_SPEED 0.0;
+#define INITIAL_PROJECTILE_SPEED 0.0; //NOTE CONSTEXPR AUTO MAYBE MORE SAFE? SO REPLACE THE DEFINES?
+constexpr float PLAYER_PROJ_SCALE = 0.7; //ALSO NOTE THAT DEFINE IS MACRO AND CAN BE USED TO MAKE CODE READABLE!!!
+
 using namespace sf;
 
 class PlayerProjectile
@@ -26,7 +28,7 @@ public:
 
 	
 	void update();
-	void render();
+	void render(RenderTarget* target);
 
 };
 

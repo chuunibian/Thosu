@@ -2,8 +2,8 @@
 #include "PlayerAnimation.h"
 #include "PlayerProjectile.h"
 
-#define PLAYER_ATTACK_COOLDOWN_MAX 5.f
-#define ATTACK_COOLDOWN_TIMING_INCREMENT .3f
+#define PLAYER_ATTACK_COOLDOWN_MAX 3.f
+#define ATTACK_COOLDOWN_TIMING_INCREMENT .5f
 
 class PlayerController
 {
@@ -22,9 +22,11 @@ private:
 	std::vector<PlayerProjectile*> player_projectiles;
 
 	void initVariables();
+	void initPlayerProjectileTexture();
 	void updatePlayerMovement();
 	bool canAttack();
 	void updateCooldown();
+	void updatePlayerProjectiles();
 
 public:
 	PlayerController();
