@@ -13,7 +13,7 @@ public:
 	CollisionController();
 	~CollisionController();
 
-	void updatePlayerCollision(Sprite& player_sprite); //pass in as pointer?
+	//void updatePlayerCollision(Sprite& player_sprite, float window_size_x, float window_size_y); //pass in as pointer?
 
 	void update();
 	void render(RenderWindow& target);

@@ -64,6 +64,41 @@ bool PlayerController::canAttack()
 	return can_attack_flag;
 }
 
+void PlayerController::updatePlayerWindowCollision(float& screen_width, float& screen_height)
+{
+	int player_animation_left =   player_animation->getPlayerBounds().left;
+	int player_animation_height = player_animation->getPlayerBounds().height;
+	int player_animation_top =    player_animation->getPlayerBounds().top;
+	int player_animation_width =  player_animation->getPlayerBounds().width;
+
+	//Left world collision
+	if (player_animation_left < 0.f)
+	{ //this good follow for rest
+		player_animation->setPlayerPosition(zero_C, player_animation_top);
+	}
+	//Right world collison
+	else if (player_animation_left + player_animation_width >= screen_width)
+	{
+		player_animation->setPlayerPosition(screen_width - player_animation_width, player_animation_top);
+	}
+
+	player_animation_left = player_animation->getPlayerBounds().left;
+	player_animation_height = player_animation->getPlayerBounds().height;
+	player_animation_top = player_animation->getPlayerBounds().top;
+	player_animation_width = player_animation->getPlayerBounds().width;
+
+	//Top world collision
+	if (player_animation_top < 0.f)
+	{
+		player_animation->setPlayerPosition(player_animation_left, zero_C);
+	}
+	//Bottom world collision
+	else if (player_animation_top + player_animation_height >= screen_height)
+	{
+		player_animation->setPlayerPosition(player_animation_left, screen_height - player_animation_height);
+	}
+}
+
 void PlayerController::updateCooldown()
 {
 	if (attack_cd_time < attack_cd_max) {
@@ -80,11 +115,12 @@ void PlayerController::updatePlayerProjectiles()
 
 }
 
-void PlayerController::update()
+void PlayerController::update(float screen_height, float screen_width)
 {
 	updateCooldown();
 	player_animation->update();
 	updatePlayerMovement();
+	updatePlayerWindowCollision(screen_height, screen_width);
 	updatePlayerProjectiles();
 }
 

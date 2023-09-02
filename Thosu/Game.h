@@ -7,9 +7,9 @@
 
 #include "PlayerController.h"
 
-#define SCREEN_HEIGHT 850
-#define SCREEN_WIDTH 1000
-#define FRAME_LIMIT 60
+constexpr auto SCREEN_HEIGHT = 850;
+constexpr auto SCREEN_WIDTH = 1000;
+constexpr auto FRAME_LIMIT = 60;
 
 using namespace sf;
 

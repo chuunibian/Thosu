@@ -63,6 +63,11 @@ FloatRect PlayerAnimation::getPlayerBounds()
 	return player_sprite.getGlobalBounds();
 }
 
+void PlayerAnimation::setPlayerPosition(float pos_X, float pos_Y)
+{
+	player_sprite.setPosition(pos_X, pos_Y);
+}
+
 void PlayerAnimation::move(float x, float y)
 {
 	this->player_sprite.move(x, y);

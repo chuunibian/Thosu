@@ -37,6 +37,8 @@ public:
 	int getPlayerSpriteFrame();
 	const Vector2f& getPlayerPosition();
 	FloatRect getPlayerBounds();
+	void setPlayerPosition(float pos_X, float pos_Y);
+
 
 	//Functions
 	void move(float x, float y);

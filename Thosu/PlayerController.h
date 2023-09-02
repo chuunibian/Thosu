@@ -25,6 +25,7 @@ private:
 	void initPlayerProjectileTexture();
 	void updatePlayerMovement();
 	bool canAttack();
+	void updatePlayerWindowCollision(float& screen_width, float& screen_height);
 	void updateCooldown();
 	void updatePlayerProjectiles();
 
@@ -32,7 +33,7 @@ public:
 	PlayerController();
 	~PlayerController();
 
-	void update();
+	void update(float screen_width, float screen_height);
 	void render(RenderTarget& target);
 };
 

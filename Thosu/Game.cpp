@@ -43,7 +43,7 @@ void Game::pollEvents()
 void Game::update()
 {
     pollEvents();
-    player_controller.update();
+    player_controller.update(SCREEN_HEIGHT, SCREEN_WIDTH);
 }
 
 void Game::render()
