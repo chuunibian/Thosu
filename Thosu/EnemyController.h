@@ -2,7 +2,7 @@
 class EnemyController
 {
 private:
-	Enemy enemy;
+	//Enemy enemy;
 public:
 
 };
