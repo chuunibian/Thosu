@@ -2,8 +2,8 @@
 #include "PlayerAnimation.h"
 #include "PlayerProjectile.h"
 
-#define PLAYER_ATTACK_COOLDOWN_MAX 3.f
-#define ATTACK_COOLDOWN_TIMING_INCREMENT .5f
+constexpr auto PLAYER_ATTACK_COOLDOWN_MAX = 3.f;
+constexpr auto ATTACK_COOLDOWN_TIMING_INCREMENT = .5f;
 
 class PlayerController
 {
@@ -28,6 +28,7 @@ private:
 	void updatePlayerWindowCollision(float& screen_width, float& screen_height);
 	void updateCooldown();
 	void updatePlayerProjectiles();
+	void updatePlayerProjectilesCulling();
 
 public:
 	PlayerController();

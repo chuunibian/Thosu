@@ -115,6 +115,20 @@ void PlayerController::updatePlayerProjectiles()
 
 }
 
+void PlayerController::updatePlayerProjectilesCulling() //can be optimized
+{
+	unsigned int position = 0;
+	int player_projectiles_size = player_projectiles.size();
+	for (auto* projectile : player_projectiles) {
+		if (projectile->getPlayerProjectileBounds().top + projectile->getPlayerProjectileBounds().height < 0.f) {
+			delete player_projectiles.at(position);
+			player_projectiles.erase(player_projectiles.begin() + position); //delete from vec
+			position -= 1;
+		}
+	}
+	position += 1;
+}
+
 void PlayerController::update(float screen_height, float screen_width)
 {
 	updateCooldown();
@@ -122,6 +136,8 @@ void PlayerController::update(float screen_height, float screen_width)
 	updatePlayerMovement();
 	updatePlayerWindowCollision(screen_height, screen_width);
 	updatePlayerProjectiles();
+	updatePlayerProjectilesCulling();
+	std::cout << player_projectiles.size();
 }
 
 void PlayerController::render(RenderTarget& target)

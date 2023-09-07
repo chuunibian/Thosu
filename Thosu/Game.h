@@ -24,7 +24,7 @@ private:
 	//GUI game_gui;
 	PlayerController player_controller;
 	//Enemy enemies;
-	//CollisionController collision_controller;
+	//CollisionController collision_controller; WHAT IF PLAYER AND PROJ HAD COLLISION CONTROLLER
 	//ScoreController score_controller;
 
 

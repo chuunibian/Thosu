@@ -24,6 +24,11 @@ const FloatRect PlayerProjectile::getPlayerProjectileBounds() const
 	return player_projectile_sprite.getGlobalBounds();
 }
 
+Vector2f PlayerProjectile::getPlayerOrigin()
+{
+	return player_projectile_sprite.getOrigin();
+}
+
 void PlayerProjectile::update()
 {
 	player_projectile_sprite.move(movementSpeed * projectile_direction);
