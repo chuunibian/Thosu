@@ -81,6 +81,18 @@ public:
 	// 
 	//////////////////////////////////////////////
 	void update(float screen_width, float screen_height);
+
+	///////////////////////////////////////////////
+	// Renders internal logic of the whole player animation
+	// object graphically to the render target window.
+	// This render encompasses multiple renders from
+	// composed classes
+	// 
+	// @param target
+	//		window to be rendered on
+	// 
+	///////////////////////////////////////////////
 	void render(RenderTarget& target);
+	/* =============================== */
 };
 
