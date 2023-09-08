@@ -64,6 +64,12 @@ private:
 	void initPlayerAnimation();
 	/* ============================== */
 
+	/////////////////////////////////////////
+	// updates the logic of the animation more
+	// specifically this function is shifting the frame
+	// on the sprite sheet to produce an animation
+	// 
+	/////////////////////////////////////////
 	void updateAnimation();
 
 public:

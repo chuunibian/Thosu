@@ -36,15 +36,67 @@ private:
 	std::map<std::string, Texture*> player_projectile_textures; //Bullet storing datastructures although a bit out of place not sure if it adheres to OOP
 	std::vector<PlayerProjectile*> player_projectiles;
 
+	/* ======== Initializers ======== */
+	/////////////////////////////////////////
+	// Initializes a variety of variables important
+	// to state of being or numerical logic
+	// 
+	/////////////////////////////////////////
 	void initVariables();
-	void initPlayerProjectileTexture();
 
+	/////////////////////////////////////////
+	// Initializes the player projectile texture 
+	// using the map datastructure
+	// 
+	/////////////////////////////////////////
+	void initPlayerProjectileTexture();
+	/* =============================== */
+
+	/////////////////////////////////////////
+	// Updates the player animation sprites location
+	// to mimic movement on the screen
+	// 
+	/////////////////////////////////////////
 	void updatePlayerMovement();
+
+	/////////////////////////////////////////
+	// Prevents the player animation from going out of the 
+	// window that it is bound to
+	// 
+	// @param screen_width
+	//		width of the bounded window
+	// @param screen_height
+	//		height of the bounded window
+	// 
+	/////////////////////////////////////////
 	void updatePlayerWindowCollision(float& screen_width, float& screen_height);
+
+	/////////////////////////////////////////
+	// Resets or modifies the projectile shooting timer
+	// 
+	/////////////////////////////////////////
 	void updateCooldown();
+
+	/////////////////////////////////////////
+	// Updates each of the player projectile objects
+	// in the PProj vector.
+	// 
+	/////////////////////////////////////////
 	void updatePlayerProjectiles();
+
+	/////////////////////////////////////////
+	// Checks if the player projectile is off the window bounds
+	// if so it deletes them from the PProj vector
+	// 
+	/////////////////////////////////////////
 	void updatePlayerProjectilesCulling();
 
+	/////////////////////////////////////////
+	// Checks if the cooldown timer is enough to 
+	// fire again, this controls the firerate of 
+	// the player projectiles
+	// 
+	/////////////////////////////////////////
 	bool canAttack();
 
 public:
