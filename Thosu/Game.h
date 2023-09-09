@@ -6,9 +6,10 @@
 #include<SFML/Graphics.hpp>
 
 #include "PlayerController.h"
+#include "WorldBackgroundController.h"
 
-constexpr auto SCREEN_HEIGHT = 850;
-constexpr auto SCREEN_WIDTH = 1000;
+constexpr auto SCREEN_HEIGHT = 1000;
+constexpr auto SCREEN_WIDTH = 1200;
 constexpr auto FRAME_LIMIT = 60;
 
 using namespace sf;
@@ -30,6 +31,8 @@ private:
 	/////////////////////////////////////////
 	//GUI game_gui;
 	PlayerController player_controller; //NOTE: Automatic storage object deletes when OoS
+	WorldBackgroundController world_bkgd_controller;
+
 	//Enemy enemies;
 	//CollisionController collision_controller; WHAT IF PLAYER AND PROJ HAD COLLISION CONTROLLER
 	//ScoreController score_controller;

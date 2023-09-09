@@ -15,7 +15,7 @@ void PlayerAnimation::initPlayerSprite()
 
 void PlayerAnimation::initPlayerFrame()
 {
-	player_sprite_frame = IntRect(3, 0, SPRITE_FRAME_DIMENSION_W, SPRITE_FRAME_DIMENSION_H);
+	player_sprite_frame = IntRect(3, 0, PLAYER_SPRITE_FRAME_DIMENSION_W, PLAYER_SPRITE_FRAME_DIMENSION_H);
 	player_sprite.setTextureRect(player_sprite_frame);
 	player_sprite.setScale(PLAYER_SPRITE_SCALE, PLAYER_SPRITE_SCALE);
 

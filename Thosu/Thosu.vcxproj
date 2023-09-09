@@ -145,6 +145,7 @@
     <ClCompile Include="Thosu.cpp" />
     <ClCompile Include="WorldBackground.cpp" />
     <ClCompile Include="WorldBackgroundAnimation.cpp" />
+    <ClCompile Include="WorldBackgroundController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionController.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="TextController.h" />
     <ClInclude Include="WorldBackground.h" />
     <ClInclude Include="WorldBackgroundAnimation.h" />
+    <ClInclude Include="WorldBackgroundController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

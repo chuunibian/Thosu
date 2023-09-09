@@ -64,7 +64,7 @@ bool PlayerController::canAttack()
 	return can_attack_flag;
 }
 
-void PlayerController::updatePlayerWindowCollision(float& screen_width, float& screen_height)
+void PlayerController::updatePlayerWindowCollision(float& screen_height, float& screen_width)
 {
 	int player_animation_left =   player_animation->getPlayerBounds().left;
 	int player_animation_height = player_animation->getPlayerBounds().height;

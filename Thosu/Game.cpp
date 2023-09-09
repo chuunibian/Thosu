@@ -7,7 +7,7 @@ void Game::initVariables()
 
 void Game::initWindow()
 {
-    screen_size = VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH);
+    screen_size = VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT); 
     window = new RenderWindow(screen_size, "Thosu", Style::Close | Style::Titlebar); //Window with close and titlebar
     window->setFramerateLimit(FRAME_LIMIT);
 }
@@ -43,6 +43,7 @@ void Game::pollEvents()
 void Game::update()
 {
     pollEvents();
+    world_bkgd_controller.update();
     player_controller.update(SCREEN_HEIGHT, SCREEN_WIDTH);
 }
 
@@ -50,6 +51,7 @@ void Game::render()
 {
     window->clear();
 
+    world_bkgd_controller.render(*window);
     player_controller.render(*window);
 
     window->display();
