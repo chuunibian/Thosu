@@ -11,7 +11,7 @@ void WorldBackground::initSprite()
 
 void WorldBackground::initTexture()
 {
-	bool sprite_load_flag = world_background_texture.loadFromFile("Textures/thosustg1.jpg");
+	bool sprite_load_flag = world_background_texture.loadFromFile("Textures/thosustg1v3.png");
 	if (!sprite_load_flag) {
 		std::cout << "World texture failed" << "\n";
 	}

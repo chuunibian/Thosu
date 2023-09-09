@@ -22,8 +22,8 @@ void WorldBackgroundAnimation::initBackgroundAnimation()
 
 void WorldBackgroundAnimation::updateAnimation()
 {
-	if (background_sprite_frame.left > 1600 - 750) { //for those numbers make it into cosntexpr
-		background_sprite_frame.left = 0 - 750;
+	if (background_sprite_frame.left > 2497 - 750) { //for those numbers make it into cosntexpr
+		background_sprite_frame.left = 55;
 	}
 	else {
 		background_sprite_frame.left += BACKGROUND_FRAME_INCREMENT;
