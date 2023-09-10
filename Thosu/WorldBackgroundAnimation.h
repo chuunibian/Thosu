@@ -10,6 +10,7 @@ class WorldBackgroundAnimation
 {
 private:
 	WorldBackground world_background;
+	//Parallax px
 
 	Sprite background_sprite;
 	Clock animation_timer;
