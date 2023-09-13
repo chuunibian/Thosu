@@ -4,6 +4,7 @@
 constexpr auto PLAYER_SPRITE_FRAME_DIMENSION_H = 50;
 constexpr auto PLAYER_SPRITE_FRAME_DIMENSION_W = 32;
 constexpr auto PLAYER_SPRITE_SCALE = 1.7;
+constexpr int zero = 0;
 
 enum PLAYER_ANIMATION_STATES {IDLE = 1, LEFT = 2, RIGHT = 3, RIGHTBACKIDLE = 4, LEFTBACKIDLE = 5};
 

@@ -15,7 +15,7 @@ void PlayerAnimation::initPlayerSprite()
 
 void PlayerAnimation::initPlayerFrame()
 {
-	player_sprite_frame = IntRect(3, 0, PLAYER_SPRITE_FRAME_DIMENSION_W, PLAYER_SPRITE_FRAME_DIMENSION_H);
+	player_sprite_frame = IntRect(0, 0, PLAYER_SPRITE_FRAME_DIMENSION_W, PLAYER_SPRITE_FRAME_DIMENSION_H);
 	player_sprite.setTextureRect(player_sprite_frame);
 	player_sprite.setScale(PLAYER_SPRITE_SCALE, PLAYER_SPRITE_SCALE);
 
@@ -90,24 +90,24 @@ void PlayerAnimation::updateAnimation()
 
 	if (animation_state == PLAYER_ANIMATION_STATES::IDLE) {
 		if (elapsed_time >= animation_interval_delay) {
-			player_sprite_frame.top = 0.f;	 //set intRec pos to the top where IDLE sprite line is
+			player_sprite_frame.top = zero;	 //set intRec pos to the top where IDLE sprite line is
 
-			if (player_sprite_frame.left > 108.f) { //Since left move sprites are bigger than idle size must check and go back to the original idle spot
-				player_sprite_frame.left = 0.f;
+			if (player_sprite_frame.left > 108) { //Since left move sprites are bigger than idle size must check and go back to the original idle spot
+				player_sprite_frame.left = zero;
 			}
 
 			if (idle_animation_switch == false) {	//sprite sheet bouncing back and forth
-				player_sprite_frame.left -= 32.f;
-				if (player_sprite_frame.left < 0) { //can optimize by making width a const
+				player_sprite_frame.left -= 32;
+				if (player_sprite_frame.left < zero) { //can optimize by making width a const
 					idle_animation_switch = true;
-					player_sprite_frame.left = 64.f;
+					player_sprite_frame.left = 64;
 				}
 			}
 			else {
-				player_sprite_frame.left += 32.f;
-				if (player_sprite_frame.left > 96.f) {
+				player_sprite_frame.left += 32;
+				if (player_sprite_frame.left > 96) {
 					idle_animation_switch = false;
-					player_sprite_frame.left = 64.f;
+					player_sprite_frame.left = 64;
 				}
 			} 
 			animation_timer.restart();
@@ -117,13 +117,13 @@ void PlayerAnimation::updateAnimation()
 	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHT){ //!!**!!**!!** I think bc of sprite sheet and the things are opposite direction causes the hopping sometimes
 		if (elapsed_time >= 0.1f) {
 			
-			player_sprite_frame.top = 100.f;
+			player_sprite_frame.top = 100;
 
-			if (player_sprite_frame.left <= 0) {
-				player_sprite_frame.left = 32.f;
+			if (player_sprite_frame.left <= zero) {
+				player_sprite_frame.left = 32;
 			}
 			else {
-				player_sprite_frame.left -= 32.f;
+				player_sprite_frame.left -= 32;
 			}
 
 			animation_timer.restart();
@@ -133,13 +133,13 @@ void PlayerAnimation::updateAnimation()
 	else if (animation_state == PLAYER_ANIMATION_STATES::LEFT) {
 		if (elapsed_time >= 0.1f) {
 
-			player_sprite_frame.top = 50.f;
+			player_sprite_frame.top = 50;
 
-			if (player_sprite_frame.left >= 192.f) {
-				player_sprite_frame.left = 160.f;
+			if (player_sprite_frame.left >= 192) {
+				player_sprite_frame.left = 160;
 			}
 			else {
-				player_sprite_frame.left += 32.f;
+				player_sprite_frame.left += 32;
 			}
 
 			animation_timer.restart();
@@ -148,8 +148,8 @@ void PlayerAnimation::updateAnimation()
 	}
 	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHTBACKIDLE) {
 		if (elapsed_time >= 0.06f) {
-			if (player_sprite_frame.left <= 192.f) {
-				player_sprite_frame.top = 100.f;
+			if (player_sprite_frame.left <= 192) {
+				player_sprite_frame.top = 100;
 
 				player_sprite_frame.left += 32;
 			}
@@ -160,9 +160,9 @@ void PlayerAnimation::updateAnimation()
 	}
 	else if (animation_state == PLAYER_ANIMATION_STATES::LEFTBACKIDLE) {
 		if (elapsed_time >= 0.06f) {
-			if (player_sprite_frame.left >= 0.f) {
+			if (player_sprite_frame.left >= zero) {
 
-				player_sprite_frame.top = 50.f;
+				player_sprite_frame.top = 50;
 
 				player_sprite_frame.left -= 32;
 			}
@@ -173,6 +173,6 @@ void PlayerAnimation::updateAnimation()
 	}
 	else {
 		animation_timer.restart();
-		player_sprite_frame.left = 0.f;
+		player_sprite_frame.left = zero;
 	}
 }

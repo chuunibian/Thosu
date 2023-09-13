@@ -3,8 +3,6 @@
 void PlayerController::initVariables()
 {
 	player_animation = new PlayerAnimation;
-	//moving_left_flag = false;
-	//moving_right_flag = false;
 	attack_cd_time = PLAYER_ATTACK_COOLDOWN_MAX;
 	attack_cd_max = PLAYER_ATTACK_COOLDOWN_MAX;
 }
@@ -33,18 +31,18 @@ void PlayerController::updatePlayerMovement()
 	else {
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			player_animation->move(0.f, -3.f);
+			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_NEG);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::S)) {
-			player_animation->move(0.f, 3.f);
+			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_POS);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::A)) {
 			player_animation->changePlayerState(PLAYER_ANIMATION_STATES::LEFT);
-			player_animation->move(-3.f, 0.f);
+			player_animation->move(ANIMATION_MOVE_SPEED_NEG, zero_C);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
 			player_animation->changePlayerState(PLAYER_ANIMATION_STATES::RIGHT);
-			player_animation->move(3.f, 0.f);
+			player_animation->move(ANIMATION_MOVE_SPEED_POS, zero_C);
 		}
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Space) && canAttack()) { //last for a reason? since it will get the player animation bounds
@@ -72,7 +70,7 @@ void PlayerController::updatePlayerWindowCollision(float& screen_height, float& 
 	int player_animation_width =  player_animation->getPlayerBounds().width;
 
 	//Left world collision
-	if (player_animation_left < 0.f)
+	if (player_animation_left < zero_C)
 	{ //this good follow for rest
 		player_animation->setPlayerPosition(zero_C, player_animation_top);
 	}
@@ -88,7 +86,7 @@ void PlayerController::updatePlayerWindowCollision(float& screen_height, float& 
 	player_animation_width = player_animation->getPlayerBounds().width;
 
 	//Top world collision
-	if (player_animation_top < 0.f)
+	if (player_animation_top < zero_C)
 	{
 		player_animation->setPlayerPosition(player_animation_left, zero_C);
 	}
@@ -120,7 +118,7 @@ void PlayerController::updatePlayerProjectilesCulling() //can be optimized
 	unsigned int position = 0;
 	int player_projectiles_size = player_projectiles.size();
 	for (auto* projectile : player_projectiles) {
-		if (projectile->getPlayerProjectileBounds().top + projectile->getPlayerProjectileBounds().height < 0.f) {
+		if (projectile->getPlayerProjectileBounds().top + projectile->getPlayerProjectileBounds().height < zero_C) {
 			delete player_projectiles.at(position);
 			player_projectiles.erase(player_projectiles.begin() + position); //delete from vec
 			position -= 1;

@@ -4,7 +4,9 @@
 
 constexpr auto PLAYER_ATTACK_COOLDOWN_MAX = 3.f;
 constexpr auto ATTACK_COOLDOWN_TIMING_INCREMENT = .5f;
-constexpr float zero_C = 0;
+constexpr float ANIMATION_MOVE_SPEED_POS = 3.f;
+constexpr float ANIMATION_MOVE_SPEED_NEG = -3.f;
+constexpr float zero_C = 0.f;
 
 class PlayerController
 {
