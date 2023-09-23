@@ -97,14 +97,14 @@ void PlayerAnimation::updateAnimation()
 			}
 
 			if (idle_animation_switch == false) {	//sprite sheet bouncing back and forth
-				player_sprite_frame.left -= 32;
+				player_sprite_frame.left -= PLAYER_SPRITE_FRAME_DIMENSION_W;
 				if (player_sprite_frame.left < zero) { //can optimize by making width a const
 					idle_animation_switch = true;
 					player_sprite_frame.left = 64;
 				}
 			}
 			else {
-				player_sprite_frame.left += 32;
+				player_sprite_frame.left += PLAYER_SPRITE_FRAME_DIMENSION_W;
 				if (player_sprite_frame.left > 96) {
 					idle_animation_switch = false;
 					player_sprite_frame.left = 64;
@@ -117,13 +117,13 @@ void PlayerAnimation::updateAnimation()
 	else if (animation_state == PLAYER_ANIMATION_STATES::RIGHT){ //!!**!!**!!** I think bc of sprite sheet and the things are opposite direction causes the hopping sometimes
 		if (elapsed_time >= 0.1f) {
 			
-			player_sprite_frame.top = 100;
+			player_sprite_frame.top = PLAYER_SPRITE_RIGHT_ANI;
 
 			if (player_sprite_frame.left <= zero) {
-				player_sprite_frame.left = 32;
+				player_sprite_frame.left = PLAYER_SPRITE_FRAME_DIMENSION_W;
 			}
 			else {
-				player_sprite_frame.left -= 32;
+				player_sprite_frame.left -= PLAYER_SPRITE_FRAME_DIMENSION_W;
 			}
 
 			animation_timer.restart();
@@ -133,13 +133,13 @@ void PlayerAnimation::updateAnimation()
 	else if (animation_state == PLAYER_ANIMATION_STATES::LEFT) {
 		if (elapsed_time >= 0.1f) {
 
-			player_sprite_frame.top = 50;
+			player_sprite_frame.top = PLAYER_SPRITE_LEFT_ANI;
 
 			if (player_sprite_frame.left >= 192) {
 				player_sprite_frame.left = 160;
 			}
 			else {
-				player_sprite_frame.left += 32;
+				player_sprite_frame.left += PLAYER_SPRITE_FRAME_DIMENSION_W;
 			}
 
 			animation_timer.restart();
@@ -151,7 +151,7 @@ void PlayerAnimation::updateAnimation()
 			if (player_sprite_frame.left <= 192) {
 				player_sprite_frame.top = 100;
 
-				player_sprite_frame.left += 32;
+				player_sprite_frame.left += PLAYER_SPRITE_FRAME_DIMENSION_W;
 			}
 
 			animation_timer.restart();
@@ -164,7 +164,7 @@ void PlayerAnimation::updateAnimation()
 
 				player_sprite_frame.top = 50;
 
-				player_sprite_frame.left -= 32;
+				player_sprite_frame.left -= PLAYER_SPRITE_FRAME_DIMENSION_W;
 			}
 
 			animation_timer.restart();

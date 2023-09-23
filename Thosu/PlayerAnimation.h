@@ -3,6 +3,8 @@
 
 constexpr auto PLAYER_SPRITE_FRAME_DIMENSION_H = 50;
 constexpr auto PLAYER_SPRITE_FRAME_DIMENSION_W = 32;
+constexpr auto PLAYER_SPRITE_RIGHT_ANI = 100;
+constexpr auto PLAYER_SPRITE_LEFT_ANI = 50;
 constexpr auto PLAYER_SPRITE_SCALE = 1.7;
 constexpr int zero = 0;
 
