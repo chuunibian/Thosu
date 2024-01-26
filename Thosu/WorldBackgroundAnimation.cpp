@@ -22,7 +22,7 @@ void WorldBackgroundAnimation::initBackgroundAnimation()
 
 void WorldBackgroundAnimation::updateAnimation()
 {
-	if (background_sprite_frame.left > 2497 - 750) { //for those numbers make it into cosntexpr
+	if (background_sprite_frame.left > 2497 - WORLD_SPRITE_FRAME_DIMENSION_W) { //for those numbers make it into cosntexpr
 		background_sprite_frame.left = 55;
 	}
 	else {

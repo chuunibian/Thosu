@@ -7,6 +7,7 @@
 
 #include "PlayerController.h"
 #include "WorldBackgroundController.h"
+#include "EnemyController.h"
 
 constexpr auto SCREEN_HEIGHT = 1000;
 constexpr auto SCREEN_WIDTH = 1200;
@@ -32,6 +33,7 @@ private:
 	//GUI game_gui;
 	PlayerController player_controller; //NOTE: Automatic storage object deletes when OoS
 	WorldBackgroundController world_bkgd_controller;
+	EnemyController enemy_controller;
 
 	//Enemy enemies;
 	//CollisionController collision_controller; WHAT IF PLAYER AND PROJ HAD COLLISION CONTROLLER

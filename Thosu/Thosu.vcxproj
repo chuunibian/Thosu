@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClickDots.cpp" />
     <ClCompile Include="CollisionController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyAnimation.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="WorldBackgroundController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClickDots.h" />
     <ClInclude Include="CollisionController.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyAnimation.h" />

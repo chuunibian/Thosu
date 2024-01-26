@@ -45,6 +45,7 @@ void Game::update()
     pollEvents();
     world_bkgd_controller.update();
     player_controller.update(SCREEN_HEIGHT, SCREEN_WIDTH);
+    enemy_controller.update();
 }
 
 void Game::render()
@@ -53,6 +54,7 @@ void Game::render()
 
     world_bkgd_controller.render(*window);
     player_controller.render(*window);
+    enemy_controller.render(*window);
 
     window->display();
 }

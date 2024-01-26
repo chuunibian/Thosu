@@ -2,6 +2,7 @@
 
 #include <SFML/System.hpp>
 #include<SFML/Graphics.hpp>
+#include "EnemyAnimation.h"
 
 constexpr float SECOND_IN_MINUTE = 60.0;
 
@@ -10,14 +11,14 @@ using namespace sf;
 class EnemyController
 {
 private:
-	//EnemyAnimation enemy_animation;
-	Clock timer;
+	EnemyAnimation enemy_animation;
 	//make accel decell for enemyt movement
 
-	float stage_max_time = 3 * SECOND_IN_MINUTE;
 public:
-
 	EnemyController();
 	~EnemyController();
+
+	void update();
+	void render(RenderTarget& target);
 };
 

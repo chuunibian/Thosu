@@ -135,7 +135,7 @@ void PlayerController::update(float screen_height, float screen_width)
 	updatePlayerWindowCollision(screen_height, screen_width);
 	updatePlayerProjectiles();
 	updatePlayerProjectilesCulling();
-	std::cout << player_projectiles.size();
+	//std::cout << player_projectiles.size();
 }
 
 void PlayerController::render(RenderTarget& target)

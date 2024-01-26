@@ -2,7 +2,6 @@
 
 void Player::initVariables()
 {
-
 }
 
 void Player::initSprite()
