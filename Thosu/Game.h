@@ -27,7 +27,7 @@ private:
 	Event exit_event;
 	VideoMode screen_size;
 	Clock delta_clock;
-	float dt = 0;
+	float dt;
 
 	/////////////////////////////////////////
 	// Compositional Objects

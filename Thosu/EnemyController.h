@@ -11,10 +11,11 @@ using namespace sf;
 class EnemyController
 {
 private:
-	EnemyAnimation enemy_animation;
 	//make accel decell for enemyt movement
 
 public:
+	EnemyAnimation enemy_animation;
+
 	EnemyController();
 	~EnemyController();
 

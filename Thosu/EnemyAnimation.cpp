@@ -77,6 +77,11 @@ EnemyAnimation::~EnemyAnimation()
 {
 }
 
+Vector2f EnemyAnimation::getEnemyPosition()
+{
+	return enemy_sprite.getPosition();
+}
+
 void EnemyAnimation::render(RenderTarget& target)
 {
 	target.draw(enemy_sprite);

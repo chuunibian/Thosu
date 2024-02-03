@@ -38,6 +38,7 @@ public:
 	EnemyAnimation();
 	~EnemyAnimation();
 
+	Vector2f getEnemyPosition();
 	void render(RenderTarget& target);
 	void update();
 };

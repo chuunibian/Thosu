@@ -4,13 +4,13 @@
 #include <iostream>
 #include "EnemyProjectile.h"
 
-constexpr auto max_sector_projectiles = 2500;
+constexpr auto max_sector_projectiles = 3000;
 constexpr auto max_2nd_sector_projectiles = 500;
 constexpr auto total_2nd_projectiles = max_2nd_sector_projectiles * 2;
 constexpr auto total_projectiles = max_sector_projectiles * 16;
-constexpr double red_ball_wave_time = 0.3;
-constexpr double blue_ball_wave_time = 20;
-constexpr double purple_ball_wave_time = 40;
+constexpr double red_ball_wave_time = 0.1;
+constexpr double blue_ball_wave_time = 115;
+constexpr double purple_ball_wave_time = 100;
 constexpr float game_window_height = 1000;
 constexpr float game_window_width = 750;
 constexpr double radius = 20;
@@ -24,7 +24,7 @@ public:
 	EnemyProjectileController();
 	~EnemyProjectileController();
 
-	void update();
+	void update(float dt, Vector2f enemy_position);
 	void render(RenderTarget& target);
 
 private:
@@ -57,7 +57,7 @@ private:
 	void initializeTextures();
 
 	void addProjectileToSector(VertexArray* general_sector, EnemyProjectile* bul, int i);
-	void updateSectorProjectilePosition();
-	void updateProjectilePattern();
+	void updateSectorProjectilePosition(float dt);
+	void updateProjectilePattern(float dt, Vector2f enemy_position);
 };
 
