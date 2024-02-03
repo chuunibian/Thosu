@@ -8,6 +8,8 @@ constexpr auto OFFSET_CONSTANT = 2;
 constexpr auto ENEMY_POSITION_BOUNDS_H = 550;
 constexpr auto ENEMY_POSITION_BOUNDS_W = 550;
 constexpr auto PRECISION_ERROR = 3.0;
+constexpr int movement_delay = 3;
+
 
 
 
@@ -23,7 +25,6 @@ private:
 	Vector2f random_target_position;
 
 	float animation_delay;
-	int movement_delay;
 	float movement_speed = 4;
 	float enemy_sprite_scale;
 	bool movement_done_flag = false;

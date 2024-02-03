@@ -2,7 +2,7 @@
 
 void EnemyAnimation::initializeVariables()
 {
-	enemy_sprite_scale = .6;
+	enemy_sprite_scale = .7;
 	animation_delay = .1;
 	clock_animation.restart();
 	clock_movement.restart();
@@ -30,8 +30,8 @@ void EnemyAnimation::updateEnemyPosition()
 {
 	if (movement_done_flag == true) {
 		float elapsed_time = clock_movement.getElapsedTime().asSeconds();
-		std::cout << elapsed_time << "\n";
-		if (elapsed_time >= 1) {
+		//std::cout << elapsed_time << "\n";
+		if (elapsed_time >= movement_delay) {
 			movement_done_flag = false;
 			clock_movement.restart();
 			random_target_position = Vector2f(std::rand() % ENEMY_POSITION_BOUNDS_W, std::rand() % ENEMY_POSITION_BOUNDS_H);

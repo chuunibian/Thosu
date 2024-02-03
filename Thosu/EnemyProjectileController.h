@@ -4,6 +4,8 @@
 #include <iostream>
 #include "EnemyProjectile.h"
 
+using namespace sf;
+
 constexpr auto max_sector_projectiles = 3000;
 constexpr auto max_2nd_sector_projectiles = 500;
 constexpr auto total_2nd_projectiles = max_2nd_sector_projectiles * 2;
@@ -16,7 +18,7 @@ constexpr float game_window_width = 750;
 constexpr double radius = 20;
 constexpr double Pi = 3.14159265358979323846;
 
-using namespace sf;
+enum stage {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5};
 
 class EnemyProjectileController
 {
@@ -38,20 +40,19 @@ private:
 	Texture chromatic_ball_projectile;
 	Texture blue_knife_projectile;
 
+	stage stage_state;
+
 	double red_ball_time_counter;
 	double blue_ball_time_counter;
 	double purple_ball_time_counter;
 	double blue_knife_time_counter;
-
 	int wave_switch1;
 	int wave_switch2;
 	int wave_switch3;
-
 	int red_bullet_count;
 	int blue_bullet_count;
 	int purple_bullet_count;
 	int blue_knife_bullet_count;
-
 
 	void initializeVariables();
 	void initializeTextures();
