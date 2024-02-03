@@ -8,6 +8,7 @@
 #include "PlayerController.h"
 #include "WorldBackgroundController.h"
 #include "EnemyController.h"
+#include "EnemyProjectileController.h"
 
 constexpr auto SCREEN_HEIGHT = 1000;
 constexpr auto SCREEN_WIDTH = 1200;
@@ -25,6 +26,8 @@ private:
 	RenderWindow* window;
 	Event exit_event;
 	VideoMode screen_size;
+	Clock delta_clock;
+	float dt = 0;
 
 	/////////////////////////////////////////
 	// Compositional Objects
@@ -34,6 +37,7 @@ private:
 	PlayerController player_controller; //NOTE: Automatic storage object deletes when OoS
 	WorldBackgroundController world_bkgd_controller;
 	EnemyController enemy_controller;
+	EnemyProjectileController projectile_controller;
 
 	//Enemy enemies;
 	//CollisionController collision_controller; WHAT IF PLAYER AND PROJ HAD COLLISION CONTROLLER
