@@ -12,7 +12,8 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_1;
+	stage_state = STAGE_2;
+	negative_flip_flag = false;
 
 	for (int i = 0; i < total_projectiles; i++) {
 		projectiles[i] = NULL;
@@ -28,6 +29,7 @@ void EnemyProjectileController::initializeVariables()
 	blue_ball_time_counter = 0;
 	purple_ball_time_counter = 0;
 	blue_knife_time_counter = 0;
+	bg_laser_time_counter = 0;
 
 	wave_switch1 = 0;
 	wave_switch2 = 0;
@@ -37,6 +39,8 @@ void EnemyProjectileController::initializeVariables()
 	blue_bullet_count = 0;
 	purple_bullet_count = 0;
 	blue_knife_bullet_count = 0;
+
+	rand_y = rand() % 750;
 
 	//Rev
 	state.transform = transform;
@@ -179,13 +183,55 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 				}
 			}
 			break;
+
 		case STAGE_2:
+			if (red_ball_time_counter > .15) {
+				if (red_bullet_count == max_sector_projectiles) {
+					red_bullet_count = 0;
+					wave_switch1 += 1;
+				}
+
+				if (projectiles[red_bullet_count] != NULL) {
+					delete(projectiles[red_bullet_count]);
+					projectiles[red_bullet_count] = NULL;
+				}
+
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(cos((size_t)rand() % 180 / (Pi)) * .02, sin((size_t)rand() % 180 / (Pi)) * .02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 103, 20, 20));
+				projectiles[red_bullet_count] = projectile;
+				addProjectileToSector(&sectors, projectile, red_bullet_count);
+
+				red_bullet_count++;
+			}
+
+			if (red_ball_time_counter > .15) {
+				if (blue_bullet_count == max_sector_projectiles) {
+					blue_bullet_count = 0;
+					wave_switch1 += 1;
+				}
+
+				if (projectiles[max_sector_projectiles + blue_bullet_count] != NULL) {
+					delete(projectiles[max_sector_projectiles + blue_bullet_count]);
+					projectiles[max_sector_projectiles + blue_bullet_count] = NULL;
+				}
+				//maybe make movement orthogonal in the enemy animation
+				//make a counter and then make a fast laser go down from top to bottom in a unique location every time
+				if (bg_laser_time_counter > 1300) {
+					rand_y = rand() % 750;
+					bg_laser_time_counter = 0;
+				}
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .7), Vector2f(rand_y, 0), sf::IntRect(0, 88, 20, 15));
+				//EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .02), Vector2f((rand() % 5) * 50, 0), sf::IntRect(0, 88, 20, 15));
+				projectiles[max_sector_projectiles + blue_bullet_count] = projectile;
+				addProjectileToSector(&sectors, projectile, max_sector_projectiles + blue_bullet_count);
+
+				blue_bullet_count++;
+			}
 			break;
-		case STAGE_3:
+		case STAGE_3: //double edge idk how to do
 			break;
-		case STAGE_4:
+		case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern 
 			break;
-		case STAGE_5:
+		case STAGE_5: //Take down as quickly as possible big spam all white background
 			break;
 	}
 	
@@ -205,6 +251,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 	blue_ball_time_counter += dt;
 	red_ball_time_counter += dt;
 	purple_ball_time_counter += dt;
+	bg_laser_time_counter += dt;
 }
 
 void EnemyProjectileController::update(float dt, Vector2f enemy_position)

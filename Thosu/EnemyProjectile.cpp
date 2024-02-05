@@ -17,6 +17,11 @@ void EnemyProjectile::update(float delta_time)
 	sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
 }
 
+void EnemyProjectile::rotate(float delta_time)
+{
+	sprite.rotate(30);
+}
+
 Sprite* EnemyProjectile::getProjectileSprite()
 {
 	return &sprite; //return address of which the sprite is at

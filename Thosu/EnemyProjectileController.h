@@ -12,7 +12,7 @@ constexpr auto total_2nd_projectiles = max_2nd_sector_projectiles * 2;
 constexpr auto total_projectiles = max_sector_projectiles * 16;
 constexpr double red_ball_wave_time = 0.1;
 constexpr double blue_ball_wave_time = 115;
-constexpr double purple_ball_wave_time = 100;
+constexpr double purple_ball_wave_time = 50;
 constexpr float game_window_height = 1000;
 constexpr float game_window_width = 750;
 constexpr double radius = 20;
@@ -46,6 +46,8 @@ private:
 	double blue_ball_time_counter;
 	double purple_ball_time_counter;
 	double blue_knife_time_counter;
+	double bg_laser_time_counter;
+	float rand_y;
 	int wave_switch1;
 	int wave_switch2;
 	int wave_switch3;
@@ -53,6 +55,7 @@ private:
 	int blue_bullet_count;
 	int purple_bullet_count;
 	int blue_knife_bullet_count;
+	bool negative_flip_flag;
 
 	void initializeVariables();
 	void initializeTextures();

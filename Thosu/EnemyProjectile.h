@@ -10,6 +10,7 @@ public:
 	~EnemyProjectile();
 
 	void update(float delta_time);
+	void rotate(float delta_time);
 	Sprite* getProjectileSprite();
 private:
 	Sprite sprite;

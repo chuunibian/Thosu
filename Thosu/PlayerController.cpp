@@ -25,24 +25,28 @@ PlayerController::~PlayerController()
 
 void PlayerController::updatePlayerMovement()
 {
+	float shift_slow_mod = 1.f;
+	if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+		shift_slow_mod = .5;
+	}
 	if (!Keyboard::isKeyPressed(Keyboard::W) && !Keyboard::isKeyPressed(Keyboard::A) && !Keyboard::isKeyPressed(Keyboard::S) && !Keyboard::isKeyPressed(Keyboard::D)) {
 			player_animation->changePlayerState(PLAYER_ANIMATION_STATES::IDLE);
 	}
 	else {
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_NEG);
+			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_NEG * shift_slow_mod);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::S)) {
-			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_POS);
+			player_animation->move(zero_C, ANIMATION_MOVE_SPEED_POS * shift_slow_mod);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::A)) {
 			player_animation->changePlayerState(PLAYER_ANIMATION_STATES::LEFT);
-			player_animation->move(ANIMATION_MOVE_SPEED_NEG, zero_C);
+			player_animation->move(ANIMATION_MOVE_SPEED_NEG * shift_slow_mod, zero_C);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
 			player_animation->changePlayerState(PLAYER_ANIMATION_STATES::RIGHT);
-			player_animation->move(ANIMATION_MOVE_SPEED_POS, zero_C);
+			player_animation->move(ANIMATION_MOVE_SPEED_POS * shift_slow_mod, zero_C);
 		}
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Space) && canAttack()) { //last for a reason? since it will get the player animation bounds
