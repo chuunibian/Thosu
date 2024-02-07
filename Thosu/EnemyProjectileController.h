@@ -6,6 +6,7 @@
 
 using namespace sf;
 
+//these should be capitalized
 constexpr auto max_sector_projectiles = 3000;
 constexpr auto max_2nd_sector_projectiles = 500;
 constexpr auto total_2nd_projectiles = max_2nd_sector_projectiles * 2;
@@ -39,6 +40,7 @@ private:
 	VertexArray sectors_2;
 	Texture chromatic_ball_projectile;
 	Texture blue_knife_projectile;
+	Clock stage_timer;
 
 	stage stage_state;
 

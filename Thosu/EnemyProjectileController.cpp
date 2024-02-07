@@ -12,8 +12,10 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_2;
+	stage_state = STAGE_4;
 	negative_flip_flag = false;
+
+	stage_timer.restart();
 
 	for (int i = 0; i < total_projectiles; i++) {
 		projectiles[i] = NULL;
@@ -50,8 +52,6 @@ void EnemyProjectileController::initializeVariables()
 
 void EnemyProjectileController::initializeTextures()
 {
-
-
 	bool temp1 = chromatic_ball_projectile.loadFromFile("Textures/chromatic_ball_sprite.png");
 	if (!temp1) {
 		std::cout << "Chromatic ball load failed";
@@ -123,7 +123,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 
 				float x = radius * cos((size_t)(red_bullet_count % 180) / Pi);
 				float y = radius * sin((size_t)(red_bullet_count % 180) / Pi);
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 64, 16, 16));
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.02, y * 0.02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 64, 16, 16));
 				projectiles[red_bullet_count] = projectile;
 				addProjectileToSector(&sectors, projectile, red_bullet_count);
 
@@ -133,7 +133,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 
 			// Blue Chromatic Ball
 			if (blue_ball_time_counter > blue_ball_wave_time && wave_switch2 < 3) {
-				for (size_t i = 0; i < 20; i++) { //creates 45 proj
+				for (size_t i = 0; i < 20; i++) {
 					float y = radius * cos((size_t)i / (Pi));
 					std::cout << "y: " << y << "\n";
 					float x = radius * sin((size_t)i / (Pi));
@@ -196,7 +196,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 					projectiles[red_bullet_count] = NULL;
 				}
 
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(cos((size_t)rand() % 180 / (Pi)) * .02, sin((size_t)rand() % 180 / (Pi)) * .02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 103, 20, 20));
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(cos((size_t)rand() % 180 / (Pi)) * .02, sin((size_t)rand() % 180 / (Pi)) * .02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 103, 20, 18));
 				projectiles[red_bullet_count] = projectile;
 				addProjectileToSector(&sectors, projectile, red_bullet_count);
 
@@ -228,8 +228,58 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 			}
 			break;
 		case STAGE_3: //double edge idk how to do
+
 			break;
-		case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern 
+		case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern
+			if (red_ball_time_counter > 300) {
+				for (int i = 0; i < 15; i++) {
+					if (red_bullet_count == max_sector_projectiles) {
+						red_bullet_count = 0;
+						wave_switch1 += 1;
+					}
+
+					if (projectiles[red_bullet_count] != NULL) {
+						delete(projectiles[red_bullet_count]);
+						projectiles[red_bullet_count] = NULL;
+					}
+
+					
+					EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(.2,0), Vector2f(-15, game_window_height - 90 * i), sf::IntRect((rand() % 7)*32, 135, 32, 29));
+					//float x = radius * cos((size_t)(red_bullet_count % 180) / Pi);
+					//float y = radius * sin((size_t)(red_bullet_count % 180) / Pi);
+					//EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.02, y * 0.02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 135, 32, 29));
+					projectiles[red_bullet_count] = projectile;
+					addProjectileToSector(&sectors, projectile, red_bullet_count);
+
+					red_bullet_count++;
+					red_ball_time_counter = 0;
+				}
+			}
+
+			if (purple_ball_time_counter > purple_ball_wave_time && wave_switch3 >= 1) {
+				for (size_t i = 0; i < 50; i++) {
+					float y = radius * cos((size_t)rand() % 180 / (Pi));
+					float x = radius * sin((size_t)rand() % 180 / (Pi));
+
+					EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 8, enemy_position.y + 8), sf::IntRect((rand()%16)*15, 120, 12, 12));
+
+					if (purple_bullet_count == 14 * max_sector_projectiles) {
+						purple_bullet_count = 0;
+						wave_switch3++;
+					}
+
+					if (projectiles[2 * max_sector_projectiles + purple_bullet_count] != NULL) {
+						delete(projectiles[2 * max_sector_projectiles + purple_bullet_count]);
+						projectiles[2 * max_sector_projectiles + purple_bullet_count] = NULL;
+					}
+
+					projectiles[2 * max_sector_projectiles + purple_bullet_count] = projectile;
+					addProjectileToSector(&sectors, projectile, 2 * max_sector_projectiles + purple_bullet_count);
+
+					purple_bullet_count++;
+					purple_ball_time_counter = purple_ball_time_counter - purple_ball_wave_time;
+				}
+			}
 			break;
 		case STAGE_5: //Take down as quickly as possible big spam all white background
 			break;
@@ -256,6 +306,16 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 
 void EnemyProjectileController::update(float dt, Vector2f enemy_position)
 {
+	if (stage_timer.getElapsedTime().asSeconds() > 30) {
+		switch (stage_state) {
+		case STAGE_1:
+			stage_state = STAGE_2;
+			stage_timer.restart();
+			break;
+		default:
+			break;
+		}
+	}
 	updateSectorProjectilePosition(dt);
 	updateProjectilePattern(dt, enemy_position);
 
