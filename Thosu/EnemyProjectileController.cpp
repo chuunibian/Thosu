@@ -12,7 +12,7 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_4;
+	stage_state = STAGE_3;
 	negative_flip_flag = false;
 
 	stage_timer.restart();
@@ -75,7 +75,7 @@ void EnemyProjectileController::addProjectileToSector(VertexArray* sectors, Enem
 	Vertex* quad = &(*sectors)[i*4];
 	Sprite* sprite = projectile->getProjectileSprite();
 
-	quad[0].position = Vector2f(sprite->getPosition().x, sprite->getPosition().y);
+	quad[0].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y);
 	quad[1].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width,sprite->getPosition().y);
 	quad[2].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width,sprite->getPosition().y + sprite->getTextureRect().height);
 	quad[3].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y + sprite->getTextureRect().height);
@@ -84,6 +84,33 @@ void EnemyProjectileController::addProjectileToSector(VertexArray* sectors, Enem
 	quad[1].texCoords = sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width,sprite->getTextureRect().top);
 	quad[2].texCoords = sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width,sprite->getTextureRect().top + sprite->getTextureRect().height);
 	quad[3].texCoords = sf::Vector2f(sprite->getTextureRect().left, sprite->getTextureRect().top + sprite->getTextureRect().height);
+}
+
+void EnemyProjectileController::addProjectileToSectorRotated(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, float angle)
+{
+	sf::Vertex* quad = &(*sectors)[i * 4];
+	sf::Sprite* sprite = projectile->getProjectileSprite();
+
+	// Set position
+	quad[0].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y);
+	quad[1].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y);
+	quad[2].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y + sprite->getTextureRect().height);
+	quad[3].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y + sprite->getTextureRect().height);
+
+
+	sf::Vector2f spriteOrigin = sf::Vector2f(18.f, 185.5f); //static origin bc cant get dynamic to work
+
+	Transform transform_stage_3;
+	transform_stage_3.rotate(180 + angle, spriteOrigin);
+	sf::Vector2f rotatedTopLeft = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left, sprite->getTextureRect().top));
+	sf::Vector2f rotatedTopRight = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width, sprite->getTextureRect().top));
+	sf::Vector2f rotatedBottomRight = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width, sprite->getTextureRect().top + sprite->getTextureRect().height));
+	sf::Vector2f rotatedBottomLeft = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left, sprite->getTextureRect().top + sprite->getTextureRect().height));
+
+	quad[0].texCoords = rotatedTopLeft;
+	quad[1].texCoords = rotatedTopRight;
+	quad[2].texCoords = rotatedBottomRight;
+	quad[3].texCoords = rotatedBottomLeft;
 }
 
 void EnemyProjectileController::updateSectorProjectilePosition(float dt)
@@ -108,128 +135,153 @@ void EnemyProjectileController::updateSectorProjectilePosition(float dt)
 void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy_position)
 {
 	switch (stage_state) {
-		case STAGE_1:
-			// Small Chromatic Red
-			if (red_ball_time_counter > red_ball_wave_time) {
-				if (red_bullet_count == max_sector_projectiles) {
-					red_bullet_count = 0;
-					wave_switch1 += 1;
-				}
-
-				if (projectiles[red_bullet_count] != NULL) {
-					delete(projectiles[red_bullet_count]);
-					projectiles[red_bullet_count] = NULL;
-				}
-
-				float x = radius * cos((size_t)(red_bullet_count % 180) / Pi);
-				float y = radius * sin((size_t)(red_bullet_count % 180) / Pi);
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.02, y * 0.02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 64, 16, 16));
-				projectiles[red_bullet_count] = projectile;
-				addProjectileToSector(&sectors, projectile, red_bullet_count);
-
-				red_bullet_count++;
-				//red_ball_time_counter = red_ball_time_counter - red_ball_wave_time;
+	case STAGE_1:
+		// Small Chromatic Red
+		if (red_ball_time_counter > red_ball_wave_time) {
+			if (red_bullet_count == max_sector_projectiles) {
+				red_bullet_count = 0;
+				wave_switch1 += 1;
 			}
 
-			// Blue Chromatic Ball
-			if (blue_ball_time_counter > blue_ball_wave_time && wave_switch2 < 3) {
-				for (size_t i = 0; i < 20; i++) {
-					float y = radius * cos((size_t)i / (Pi));
-					std::cout << "y: " << y << "\n";
-					float x = radius * sin((size_t)i / (Pi));
-					EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 10, enemy_position.y + 15), sf::IntRect(128, 0, 64, 64));
-
-					if (blue_bullet_count == max_sector_projectiles) {
-						blue_bullet_count = 0;
-						wave_switch2++;
-					}
-
-					if (projectiles[max_sector_projectiles + blue_bullet_count] != NULL) {
-						delete(projectiles[max_sector_projectiles + blue_bullet_count]);
-						projectiles[max_sector_projectiles + blue_bullet_count] = NULL;
-					}
-
-					projectiles[max_sector_projectiles + blue_bullet_count] = projectile;
-					addProjectileToSector(&sectors, projectile, max_sector_projectiles + blue_bullet_count);
-
-					blue_bullet_count++;
-					blue_ball_time_counter = blue_ball_time_counter - blue_ball_wave_time;
-				}
+			if (projectiles[red_bullet_count] != NULL) {
+				delete(projectiles[red_bullet_count]);
+				projectiles[red_bullet_count] = NULL;
 			}
 
-			//Purple?
-			if (purple_ball_time_counter > purple_ball_wave_time && wave_switch3 >= 1) {
-				for (size_t i = 0; i < 50; i++) {
-					float y = radius * cos((size_t)rand() % 180 / (Pi));
-					float x = radius * sin((size_t)rand() % 180 / (Pi));
+			float x = radius * cos((size_t)(red_bullet_count % 180) / Pi);
+			float y = radius * sin((size_t)(red_bullet_count % 180) / Pi);
+			EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.02, y * 0.02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 64, 16, 16));
+			projectiles[red_bullet_count] = projectile;
+			addProjectileToSector(&sectors, projectile, red_bullet_count);
 
-					EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 8, enemy_position.y + 8), sf::IntRect(0, 80, 8, 8));
+			red_bullet_count++;
+			red_ball_time_counter = 0;
+		}
 
-					if (purple_bullet_count == 14 * max_sector_projectiles) {
-						purple_bullet_count = 0;
-						wave_switch3++;
-					}
+		// Blue Chromatic Ball
+		if (blue_ball_time_counter > blue_ball_wave_time && wave_switch2 < 3) {
+			for (size_t i = 0; i < 20; i++) {
+				float y = radius * cos((size_t)i / (Pi));
+				//std::cout << "y: " << y << "\n";
+				float x = radius * sin((size_t)i / (Pi));
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 10, enemy_position.y + 15), sf::IntRect(128, 0, 64, 64));
 
-					if (projectiles[2 * max_sector_projectiles + purple_bullet_count] != NULL) {
-						delete(projectiles[2 * max_sector_projectiles + purple_bullet_count]);
-						projectiles[2 * max_sector_projectiles + purple_bullet_count] = NULL;
-					}
-
-					projectiles[2 * max_sector_projectiles + purple_bullet_count] = projectile;
-					addProjectileToSector(&sectors, projectile, 2 * max_sector_projectiles + purple_bullet_count);
-
-					purple_bullet_count++;
-					purple_ball_time_counter = purple_ball_time_counter - purple_ball_wave_time;
-				}
-			}
-			break;
-
-		case STAGE_2:
-			if (red_ball_time_counter > .15) {
-				if (red_bullet_count == max_sector_projectiles) {
-					red_bullet_count = 0;
-					wave_switch1 += 1;
-				}
-
-				if (projectiles[red_bullet_count] != NULL) {
-					delete(projectiles[red_bullet_count]);
-					projectiles[red_bullet_count] = NULL;
-				}
-
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(cos((size_t)rand() % 180 / (Pi)) * .02, sin((size_t)rand() % 180 / (Pi)) * .02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 103, 20, 18));
-				projectiles[red_bullet_count] = projectile;
-				addProjectileToSector(&sectors, projectile, red_bullet_count);
-
-				red_bullet_count++;
-			}
-
-			if (red_ball_time_counter > .15) {
 				if (blue_bullet_count == max_sector_projectiles) {
 					blue_bullet_count = 0;
-					wave_switch1 += 1;
+					wave_switch2++;
 				}
 
 				if (projectiles[max_sector_projectiles + blue_bullet_count] != NULL) {
 					delete(projectiles[max_sector_projectiles + blue_bullet_count]);
 					projectiles[max_sector_projectiles + blue_bullet_count] = NULL;
 				}
-				//maybe make movement orthogonal in the enemy animation
-				//make a counter and then make a fast laser go down from top to bottom in a unique location every time
-				if (bg_laser_time_counter > 1300) {
-					rand_y = rand() % 750;
-					bg_laser_time_counter = 0;
-				}
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .7), Vector2f(rand_y, 0), sf::IntRect(0, 88, 20, 15));
-				//EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .02), Vector2f((rand() % 5) * 50, 0), sf::IntRect(0, 88, 20, 15));
+
 				projectiles[max_sector_projectiles + blue_bullet_count] = projectile;
 				addProjectileToSector(&sectors, projectile, max_sector_projectiles + blue_bullet_count);
 
 				blue_bullet_count++;
+				blue_ball_time_counter = blue_ball_time_counter - blue_ball_wave_time;
 			}
-			break;
-		case STAGE_3: //double edge idk how to do
+		}
 
-			break;
+		//Purple?
+		if (purple_ball_time_counter > purple_ball_wave_time && wave_switch3 >= 1) {
+			for (size_t i = 0; i < 50; i++) {
+				float y = radius * cos((size_t)rand() % 180 / (Pi));
+				float x = radius * sin((size_t)rand() % 180 / (Pi));
+
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.01, y * 0.01), Vector2f(enemy_position.x + 8, enemy_position.y + 8), sf::IntRect(0, 80, 8, 8));
+
+				if (purple_bullet_count == 14 * max_sector_projectiles) {
+					purple_bullet_count = 0;
+					wave_switch3++;
+				}
+
+				if (projectiles[2 * max_sector_projectiles + purple_bullet_count] != NULL) {
+					delete(projectiles[2 * max_sector_projectiles + purple_bullet_count]);
+					projectiles[2 * max_sector_projectiles + purple_bullet_count] = NULL;
+				}
+
+				projectiles[2 * max_sector_projectiles + purple_bullet_count] = projectile;
+				addProjectileToSector(&sectors, projectile, 2 * max_sector_projectiles + purple_bullet_count);
+
+				purple_bullet_count++;
+				purple_ball_time_counter = purple_ball_time_counter - purple_ball_wave_time;
+			}
+		}
+		break;
+
+	case STAGE_2:
+		if (red_ball_time_counter > .15) {
+			if (red_bullet_count == max_sector_projectiles) {
+				red_bullet_count = 0;
+				wave_switch1 += 1;
+			}
+
+			if (projectiles[red_bullet_count] != NULL) {
+				delete(projectiles[red_bullet_count]);
+				projectiles[red_bullet_count] = NULL;
+			}
+
+			EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(cos((size_t)rand() % 180 / (Pi)) * .02, sin((size_t)rand() % 180 / (Pi)) * .02), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(0, 103, 20, 18));
+			projectiles[red_bullet_count] = projectile;
+			addProjectileToSector(&sectors, projectile, red_bullet_count);
+
+			red_bullet_count++;
+		}
+
+		if (red_ball_time_counter > .15) {
+			if (blue_bullet_count == max_sector_projectiles) {
+				blue_bullet_count = 0;
+				wave_switch1 += 1;
+			}
+
+			if (projectiles[max_sector_projectiles + blue_bullet_count] != NULL) {
+				delete(projectiles[max_sector_projectiles + blue_bullet_count]);
+				projectiles[max_sector_projectiles + blue_bullet_count] = NULL;
+			}
+			//maybe make movement orthogonal in the enemy animation
+			//make a counter and then make a fast laser go down from top to bottom in a unique location every time
+			if (bg_laser_time_counter > 1300) {
+				rand_y = rand() % 750;
+				bg_laser_time_counter = 0;
+			}
+			EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .7), Vector2f(rand_y, 0), sf::IntRect(0, 88, 20, 15));
+			//EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(0, .02), Vector2f((rand() % 5) * 50, 0), sf::IntRect(0, 88, 20, 15));
+			projectiles[max_sector_projectiles + blue_bullet_count] = projectile;
+			addProjectileToSector(&sectors, projectile, max_sector_projectiles + blue_bullet_count);
+
+			blue_bullet_count++;
+		}
+		break;
+	case STAGE_3: //double edge idk how to do
+		if (blue_ball_time_counter > 200){
+			for (size_t i = 0; i < 20; i++) {
+				float y = radius * cos((size_t)i / (Pi));
+				//std::cout << "y: " << y << "\n";
+				float x = radius * sin((size_t)i / (Pi));
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(x * 0.03, y * 0.03), Vector2f(enemy_position.x + 10, enemy_position.y + 15), sf::IntRect(0, 169, 36, 31));
+
+				if (blue_bullet_count == max_sector_projectiles) {
+					blue_bullet_count = 0;							
+					wave_switch2++;
+				}
+				if (projectiles[max_sector_projectiles + blue_bullet_count] != NULL) {
+					delete(projectiles[max_sector_projectiles + blue_bullet_count]);
+					projectiles[max_sector_projectiles + blue_bullet_count] = NULL;
+				}
+
+				projectiles[max_sector_projectiles + blue_bullet_count] = projectile;
+				addProjectileToSectorRotated(&sectors, projectile, max_sector_projectiles + blue_bullet_count, i * 18);
+				//addProjectileToSector(&sectors, projectile, max_sector_projectiles + blue_bullet_count);
+
+				blue_bullet_count++;
+				blue_ball_time_counter = 0;
+			}
+		}
+
+		//Use the blue light streak glow ball and output 
+		break;
 		case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern
 			if (red_ball_time_counter > 300) {
 				for (int i = 0; i < 15; i++) {
@@ -243,7 +295,6 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 						projectiles[red_bullet_count] = NULL;
 					}
 
-					
 					EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(.2,0), Vector2f(-15, game_window_height - 90 * i), sf::IntRect((rand() % 7)*32, 135, 32, 29));
 					//float x = radius * cos((size_t)(red_bullet_count % 180) / Pi);
 					//float y = radius * sin((size_t)(red_bullet_count % 180) / Pi);

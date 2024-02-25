@@ -38,6 +38,7 @@ private:
 	EnemyProjectile* projectiles_2nd[total_2nd_projectiles];
 	VertexArray sectors;
 	VertexArray sectors_2;
+	//Transform transform_stage_3;
 	Texture chromatic_ball_projectile;
 	Texture blue_knife_projectile;
 	Clock stage_timer;
@@ -63,6 +64,7 @@ private:
 	void initializeTextures();
 
 	void addProjectileToSector(VertexArray* general_sector, EnemyProjectile* bul, int i);
+	void addProjectileToSectorRotated(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, float angle);
 	void updateSectorProjectilePosition(float dt);
 	void updateProjectilePattern(float dt, Vector2f enemy_position);
 };
