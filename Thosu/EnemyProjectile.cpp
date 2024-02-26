@@ -31,6 +31,11 @@ void EnemyProjectile::update(float delta_time, stage stage_state)
 	}
 }
 
+void EnemyProjectile::update(float delta_time)
+{
+		sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
+}
+
 void EnemyProjectile::rotate(float delta_time)
 {
 	sprite.rotate(30);

@@ -12,7 +12,7 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_1;
+	stage_state = STAGE_3;
 	negative_flip_flag = false;
 
 	stage_timer.restart();
@@ -159,8 +159,8 @@ void EnemyProjectileController::addProjectileToSectorRotatedToPlayer(sf::VertexA
 void EnemyProjectileController::updateSectorProjectilePosition(float dt, stage stage_state)
 {
 	switch (stage_state) {
-		case STAGE_3:
-			for (int i = 0; i < total_projectiles; i++) {
+	case STAGE_3:
+			for (int i = 0; i < max_sector_projectiles; i++) { //update blue kunai with accel
 				if (projectiles[i] != nullptr) {
 					projectiles[i]->update(dt, stage_state);
 					Vertex* quad = &sectors[i * 4];
@@ -172,8 +172,20 @@ void EnemyProjectileController::updateSectorProjectilePosition(float dt, stage s
 					quad[3].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y + spr->getTextureRect().height);
 				}
 			}
+			for (int i = max_sector_projectiles; i < max_sector_projectiles*2; i++) { //update for basic knife
+				if (projectiles[i] != nullptr) {
+					projectiles[i]->update(dt); //just use basic overloaded no stage specifier update
+					Vertex* quad = &sectors[i * 4];
+					Sprite* spr = projectiles[i]->getProjectileSprite();
+
+					quad[0].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y);
+					quad[1].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y);
+					quad[2].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y + spr->getTextureRect().height);
+					quad[3].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y + spr->getTextureRect().height);
+				}
+			}
 		break;
-		default:
+	default:
 			for (int i = 0; i < total_projectiles; i++) {
 				if (projectiles[i] != nullptr) {
 					projectiles[i]->update(dt, stage_state);
