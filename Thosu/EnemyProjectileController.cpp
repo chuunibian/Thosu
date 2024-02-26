@@ -122,19 +122,6 @@ void EnemyProjectileController::addProjectileToSectorRotatedToPlayer(sf::VertexA
 
 	/* with enemy and player position I can think of 2 ways. 1 check quad and tan angle. 2 dot product with ref top vector. I believe way 1 uses less memory also atan returns some strange things*/
 	//This is quadrant checking using tan not inverse tan
-	
-	/*if (player_position.x > enemy_position.x) {
-		if (enemy_position.y > player_position.y) {
-			angle = 90 - angle;
-		}
-		else { angle += 90; };
-	}
-	else {
-		if (player_position.y > enemy_position.y) {
-			angle += 180;
-		}
-		else { angle += 270; };
-	} */
 
 	if (player_position.x > enemy_position.x) {
 		if (enemy_position.y > player_position.y) { //I
@@ -169,22 +156,37 @@ void EnemyProjectileController::addProjectileToSectorRotatedToPlayer(sf::VertexA
 	quad[3].texCoords = rotatedBottomLeft;
 }
 
-void EnemyProjectileController::updateSectorProjectilePosition(float dt)
+void EnemyProjectileController::updateSectorProjectilePosition(float dt, stage stage_state)
 {
-	for (int i = 0; i < total_projectiles; i++) {
-		if (projectiles[i] != nullptr) {
-			projectiles[i]->update(dt);
-			Vertex* quad = &sectors[i * 4];
-			Sprite* spr = projectiles[i]->getProjectileSprite();
+	switch (stage_state) {
+		case STAGE_3:
+			for (int i = 0; i < total_projectiles; i++) {
+				if (projectiles[i] != nullptr) {
+					projectiles[i]->update(dt, stage_state);
+					Vertex* quad = &sectors[i * 4];
+					Sprite* spr = projectiles[i]->getProjectileSprite();
 
-			quad[0].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y);
-			quad[1].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width,spr->getPosition().y);
-			quad[2].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width,spr->getPosition().y + spr->getTextureRect().height);
-			quad[3].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y + spr->getTextureRect().height);
-		}
-		else {
+					quad[0].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y);
+					quad[1].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y);
+					quad[2].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y + spr->getTextureRect().height);
+					quad[3].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y + spr->getTextureRect().height);
+				}
+			}
+		break;
+		default:
+			for (int i = 0; i < total_projectiles; i++) {
+				if (projectiles[i] != nullptr) {
+					projectiles[i]->update(dt, stage_state);
+					Vertex* quad = &sectors[i * 4];
+					Sprite* spr = projectiles[i]->getProjectileSprite();
 
-		}
+					quad[0].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y);
+					quad[1].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y);
+					quad[2].position = sf::Vector2f(spr->getPosition().x + spr->getTextureRect().width, spr->getPosition().y + spr->getTextureRect().height);
+					quad[3].position = sf::Vector2f(spr->getPosition().x, spr->getPosition().y + spr->getTextureRect().height);
+				}
+			}
+		break;
 	}
 }
 
@@ -336,9 +338,9 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 			}
 		}
 
-		if (red_ball_time_counter > 100) {
-				float delta_x = (player_position.x - enemy_position.x) * .002; //optimize or make constant?
-				float delta_y = (player_position.y - enemy_position.y) * .002;
+		if (red_ball_time_counter > 700) {
+				float delta_x = (player_position.x - enemy_position.x) * .001; //optimize or make constant?
+				float delta_y = (player_position.y - enemy_position.y) * .001;
 				if (red_bullet_count == max_sector_projectiles) {
 					red_bullet_count = 0;
 					wave_switch1 += 1;
@@ -445,14 +447,14 @@ void EnemyProjectileController::update(float dt, Vector2f enemy_position, Vector
 			stage_timer.restart();
 			break;
 		case STAGE_3:
-			stage_state = STAGE_4;
+			//stage_state = STAGE_4;
 			stage_timer.restart();
 			break;
 		default:
 			break;
 		}
 	}
-	updateSectorProjectilePosition(dt);
+	updateSectorProjectilePosition(dt, stage_state);
 	updateProjectilePattern(dt, enemy_position, player_position);
 
 }

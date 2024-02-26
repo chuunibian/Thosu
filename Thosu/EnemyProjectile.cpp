@@ -12,9 +12,23 @@ EnemyProjectile::~EnemyProjectile()
 {
 }
 
-void EnemyProjectile::update(float delta_time)
+void EnemyProjectile::update(float delta_time, stage stage_state)
 {
-	sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
+	if (stage_state == STAGE_3) {
+		if (fast_switch_counter < 1000) {
+			velocity.x += .005;
+			velocity.y += .005;
+		}
+		else {
+			acceleration_counter *= 10;
+			velocity.x += acceleration_counter;
+		}
+		fast_switch_counter++;
+		sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
+	}
+	else {
+		sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
+	}
 }
 
 void EnemyProjectile::rotate(float delta_time)

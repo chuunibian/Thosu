@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "EnemyProjectile.h"
+#include "GameEnums.h"
 
 using namespace sf;
 
@@ -19,7 +20,7 @@ constexpr float game_window_width = 750;
 constexpr double radius = 20;
 constexpr double Pi = 3.14159265358979323846;
 
-enum stage {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5};
+//enum stage {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5};
 
 class EnemyProjectileController
 {
@@ -65,7 +66,7 @@ private:
 	void addProjectileToSector(VertexArray* general_sector, EnemyProjectile* bul, int i);
 	void addProjectileToSectorRotated(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, float angle);
 	void addProjectileToSectorRotatedToPlayer(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, Vector2f player_position, Vector2f enemy_position);
-	void updateSectorProjectilePosition(float dt);
+	void updateSectorProjectilePosition(float dt, stage stage_state);
 	void updateProjectilePattern(float dt, Vector2f enemy_position, Vector2f player_position);
 };
 

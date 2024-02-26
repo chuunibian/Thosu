@@ -141,6 +141,7 @@
     <ClCompile Include="EnemyProjectile.cpp" />
     <ClCompile Include="EnemyProjectileController.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEnums.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="EnemyProjectile.h" />
     <ClInclude Include="EnemyProjectileController.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEnums.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAnimation.h" />
