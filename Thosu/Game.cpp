@@ -48,7 +48,7 @@ void Game::update()
     world_bkgd_controller.update();
     player_controller.update(SCREEN_HEIGHT, SCREEN_WIDTH);
     enemy_controller.update();
-    projectile_controller.update(dt, enemy_controller.enemy_animation.getEnemyPosition());
+    projectile_controller.update(dt, enemy_controller.enemy_animation.getEnemyPosition(), player_controller.getPlayerPosition());
 }
 
 void Game::render()

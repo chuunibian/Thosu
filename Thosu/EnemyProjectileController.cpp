@@ -12,7 +12,7 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_3;
+	stage_state = STAGE_1;
 	negative_flip_flag = false;
 
 	stage_timer.restart();
@@ -53,21 +53,11 @@ void EnemyProjectileController::initializeVariables()
 void EnemyProjectileController::initializeTextures()
 {
 	bool temp1 = chromatic_ball_projectile.loadFromFile("Textures/chromatic_ball_sprite.png");
-	if (!temp1) {
-		std::cout << "Chromatic ball load failed";
-	}
-	else {
-		std::cout << "Chromatic ball suc";
-	}
-
+	if (!temp1) { std::cout << "Chromatic ball load failed";  }
+	else { std::cout << "Chromatic ball suc"; }
 	bool temp2 = blue_knife_projectile.loadFromFile("Textures/blue_knife_sprite.png");
-	if (!temp2) {
-		std::cout << "Knife load failed";
-	}
-	else {
-		std::cout << "Knife suc";
-	}
-
+	if (!temp2) { std::cout << "Knife load failed"; }
+	else { std::cout << "Knife suc"; }
 }
 
 void EnemyProjectileController::addProjectileToSector(VertexArray* sectors, EnemyProjectile* projectile, int i)
@@ -113,6 +103,72 @@ void EnemyProjectileController::addProjectileToSectorRotated(sf::VertexArray* se
 	quad[3].texCoords = rotatedBottomLeft;
 }
 
+void EnemyProjectileController::addProjectileToSectorRotatedToPlayer(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, Vector2f player_position, Vector2f enemy_position)
+{
+	sf::Vertex* quad = &(*sectors)[i * 4];
+	sf::Sprite* sprite = projectile->getProjectileSprite();
+
+	quad[0].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y);
+	quad[1].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y);
+	quad[2].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y + sprite->getTextureRect().height);
+	quad[3].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y + sprite->getTextureRect().height);
+
+	sf::Vector2f spriteOrigin = sf::Vector2f(80.f, 189.f); //static origin for the kunai
+
+	float delta_x = player_position.x - enemy_position.x;
+	float delta_y = player_position.y - enemy_position.y;
+	float angle = 0;
+	std::cout << angle << "\n";
+
+	/* with enemy and player position I can think of 2 ways. 1 check quad and tan angle. 2 dot product with ref top vector. I believe way 1 uses less memory also atan returns some strange things*/
+	//This is quadrant checking using tan not inverse tan
+	
+	/*if (player_position.x > enemy_position.x) {
+		if (enemy_position.y > player_position.y) {
+			angle = 90 - angle;
+		}
+		else { angle += 90; };
+	}
+	else {
+		if (player_position.y > enemy_position.y) {
+			angle += 180;
+		}
+		else { angle += 270; };
+	} */
+
+	if (player_position.x > enemy_position.x) {
+		if (enemy_position.y > player_position.y) { //I
+			angle = 270 + -(std::atan(delta_y / delta_x) * (180.f / Pi));
+		}
+		else 
+		{ //IV
+			angle = 270 - std::atan(delta_y / delta_x) * (180.f / Pi);
+		}; 
+	}
+	else {
+		if (player_position.y > enemy_position.y) { //III
+			angle = 90 + -(std::atan(delta_y / delta_x) * (180.f / Pi));
+		}
+		else 
+		{ //II
+			angle = 90 - std::atan(delta_y / delta_x) * (180.f / Pi);
+		};
+	}
+	//std::cout << angle << "\n";
+
+	Transform transform_stage_3;
+	transform_stage_3.rotate(angle, spriteOrigin);
+	sf::Vector2f rotatedTopLeft = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left, sprite->getTextureRect().top));
+	sf::Vector2f rotatedTopRight = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width, sprite->getTextureRect().top));
+	sf::Vector2f rotatedBottomRight = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left + sprite->getTextureRect().width, sprite->getTextureRect().top + sprite->getTextureRect().height));
+	sf::Vector2f rotatedBottomLeft = transform_stage_3.transformPoint(sf::Vector2f(sprite->getTextureRect().left, sprite->getTextureRect().top + sprite->getTextureRect().height));
+
+	quad[0].texCoords = rotatedTopLeft;
+	quad[1].texCoords = rotatedTopRight;
+	quad[2].texCoords = rotatedBottomRight;
+	quad[3].texCoords = rotatedBottomLeft;
+}
+
 void EnemyProjectileController::updateSectorProjectilePosition(float dt)
 {
 	for (int i = 0; i < total_projectiles; i++) {
@@ -132,7 +188,7 @@ void EnemyProjectileController::updateSectorProjectilePosition(float dt)
 	}
 }
 
-void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy_position)
+void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy_position, Vector2f player_position)
 {
 	switch (stage_state) {
 	case STAGE_1:
@@ -280,9 +336,30 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 			}
 		}
 
+		if (red_ball_time_counter > 100) {
+				float delta_x = (player_position.x - enemy_position.x) * .002; //optimize or make constant?
+				float delta_y = (player_position.y - enemy_position.y) * .002;
+				if (red_bullet_count == max_sector_projectiles) {
+					red_bullet_count = 0;
+					wave_switch1 += 1;
+				}
+
+				if (projectiles[red_bullet_count] != NULL) {
+					delete(projectiles[red_bullet_count]);
+					projectiles[red_bullet_count] = NULL;
+				}
+
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(delta_x, delta_y), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(74, 169, 36, 36));
+				projectiles[red_bullet_count] = projectile;
+				addProjectileToSectorRotatedToPlayer(&sectors, projectile, red_bullet_count, player_position, enemy_position);
+
+				red_bullet_count++;
+				red_ball_time_counter = 0;
+		}
+
 		//Use the blue light streak glow ball and output 
 		break;
-		case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern
+	case STAGE_4: //stars make pattern with the rand % 10 * increment method and the star spit cool pattern
 			if (red_ball_time_counter > 300) {
 				for (int i = 0; i < 15; i++) {
 					if (red_bullet_count == max_sector_projectiles) {
@@ -355,12 +432,20 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 	bg_laser_time_counter += dt;
 }
 
-void EnemyProjectileController::update(float dt, Vector2f enemy_position)
+void EnemyProjectileController::update(float dt, Vector2f enemy_position, Vector2f player_position)
 {
-	if (stage_timer.getElapsedTime().asSeconds() > 30) {
+	if (stage_timer.getElapsedTime().asSeconds() > 15) {
 		switch (stage_state) {
 		case STAGE_1:
 			stage_state = STAGE_2;
+			stage_timer.restart();
+			break;
+		case STAGE_2:
+			stage_state = STAGE_3;
+			stage_timer.restart();
+			break;
+		case STAGE_3:
+			stage_state = STAGE_4;
 			stage_timer.restart();
 			break;
 		default:
@@ -368,7 +453,7 @@ void EnemyProjectileController::update(float dt, Vector2f enemy_position)
 		}
 	}
 	updateSectorProjectilePosition(dt);
-	updateProjectilePattern(dt, enemy_position);
+	updateProjectilePattern(dt, enemy_position, player_position);
 
 }
 

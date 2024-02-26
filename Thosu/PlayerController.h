@@ -116,6 +116,8 @@ public:
 	~PlayerController();
 	/* =========================== */
 
+	Vector2f getPlayerPosition();
+
 	/* ======== Update/Render ======== */
 	/////////////////////////////////////////////
 	// Updates internal logic of the player projectile

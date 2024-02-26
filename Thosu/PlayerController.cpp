@@ -23,6 +23,11 @@ PlayerController::~PlayerController()
 {
 }
 
+Vector2f PlayerController::getPlayerPosition()
+{
+	return player_animation->getPlayerPosition();
+}
+
 void PlayerController::updatePlayerMovement()
 {
 	float shift_slow_mod = 1.f;

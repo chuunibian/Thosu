@@ -27,7 +27,7 @@ public:
 	EnemyProjectileController();
 	~EnemyProjectileController();
 
-	void update(float dt, Vector2f enemy_position);
+	void update(float dt, Vector2f enemy_position, Vector2f player_position); //v2f to pointers to optimize todo
 	void render(RenderTarget& target);
 
 private:
@@ -38,7 +38,6 @@ private:
 	EnemyProjectile* projectiles_2nd[total_2nd_projectiles];
 	VertexArray sectors;
 	VertexArray sectors_2;
-	//Transform transform_stage_3;
 	Texture chromatic_ball_projectile;
 	Texture blue_knife_projectile;
 	Clock stage_timer;
@@ -65,7 +64,8 @@ private:
 
 	void addProjectileToSector(VertexArray* general_sector, EnemyProjectile* bul, int i);
 	void addProjectileToSectorRotated(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, float angle);
+	void addProjectileToSectorRotatedToPlayer(sf::VertexArray* sectors, EnemyProjectile* projectile, int i, Vector2f player_position, Vector2f enemy_position);
 	void updateSectorProjectilePosition(float dt);
-	void updateProjectilePattern(float dt, Vector2f enemy_position);
+	void updateProjectilePattern(float dt, Vector2f enemy_position, Vector2f player_position);
 };
 
