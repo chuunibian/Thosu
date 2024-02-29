@@ -12,7 +12,7 @@ EnemyProjectileController::~EnemyProjectileController()
 
 void EnemyProjectileController::initializeVariables()
 {
-	stage_state = STAGE_3;
+	stage_state = STAGE_4;
 	negative_flip_flag = false;
 
 	stage_timer.restart();
@@ -87,7 +87,6 @@ void EnemyProjectileController::addProjectileToSectorRotated(sf::VertexArray* se
 	quad[2].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y + sprite->getTextureRect().height);
 	quad[3].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y + sprite->getTextureRect().height);
 
-
 	sf::Vector2f spriteOrigin = sf::Vector2f(18.f, 185.5f); //static origin bc cant get dynamic to work
 
 	Transform transform_stage_3;
@@ -113,7 +112,7 @@ void EnemyProjectileController::addProjectileToSectorRotatedToPlayer(sf::VertexA
 	quad[2].position = sf::Vector2f(sprite->getPosition().x + sprite->getTextureRect().width, sprite->getPosition().y + sprite->getTextureRect().height);
 	quad[3].position = sf::Vector2f(sprite->getPosition().x, sprite->getPosition().y + sprite->getTextureRect().height);
 
-	sf::Vector2f spriteOrigin = sf::Vector2f(80.f, 189.f); //static origin for the kunai
+	sf::Vector2f spriteOrigin = sf::Vector2f(85.f, 185.5f); //static origin for the kunai
 
 	float delta_x = player_position.x - enemy_position.x;
 	float delta_y = player_position.y - enemy_position.y;
@@ -351,8 +350,9 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 		}
 
 		if (red_ball_time_counter > 700) {
-				float delta_x = (player_position.x - enemy_position.x) * .001; //optimize or make constant?
-				float delta_y = (player_position.y - enemy_position.y) * .001;
+				float delta_x = (player_position.x - enemy_position.x) * .0001; //optimize or make constant?
+				float delta_y = (player_position.y - enemy_position.y) * .0001;
+				std::cout << delta_x << "  " << delta_y << "\n";
 				if (red_bullet_count == max_sector_projectiles) {
 					red_bullet_count = 0;
 					wave_switch1 += 1;
@@ -363,7 +363,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 					projectiles[red_bullet_count] = NULL;
 				}
 
-				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(delta_x, delta_y), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(74, 169, 36, 36));
+				EnemyProjectile* projectile = new EnemyProjectile(&chromatic_ball_projectile, Vector2f(delta_x, delta_y), Vector2f(enemy_position.x + 24, enemy_position.y + 32), sf::IntRect(74, 169, 36, 38));
 				projectiles[red_bullet_count] = projectile;
 				addProjectileToSectorRotatedToPlayer(&sectors, projectile, red_bullet_count, player_position, enemy_position);
 
@@ -423,7 +423,7 @@ void EnemyProjectileController::updateProjectilePattern(float dt, Vector2f enemy
 				}
 			}
 			break;
-		case STAGE_5: //Take down as quickly as possible big spam all white background
+		case STAGE_5: //Take down as quickly as possible big spam all white background that could be a bonus round this is paradiso with werid patterns
 			break;
 	}
 	

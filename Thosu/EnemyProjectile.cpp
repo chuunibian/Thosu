@@ -15,13 +15,13 @@ EnemyProjectile::~EnemyProjectile()
 void EnemyProjectile::update(float delta_time, stage stage_state)
 {
 	if (stage_state == STAGE_3) {
-		if (fast_switch_counter < 1000) {
-			velocity.x += .005;
-			velocity.y += .005;
+		if (fast_switch_counter < 75) {
+			velocity.x *= 1.0001;
+			velocity.y *= 1.0001;
 		}
 		else {
-			acceleration_counter *= 10;
-			velocity.x += acceleration_counter;
+			velocity.x *= 1.06;
+			velocity.y *= 1.06;
 		}
 		fast_switch_counter++;
 		sprite.setPosition(sprite.getPosition().x + delta_time * velocity.x, sprite.getPosition().y + delta_time * velocity.y);
